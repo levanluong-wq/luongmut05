@@ -1,0 +1,101 @@
+import tkinter as tk
+from tkinter import messagebox
+import random
+
+A = []
+
+# ====== TẠO MA TRẬN ======
+def tao_ma_tran():
+    global A
+    try:
+        n = int(entry_n.get())
+
+        if n <= 1:
+            messagebox.showerror("Lỗi", "n phải > 1")
+            return
+
+        A = [[random.randint(-100, 100) for _ in range(n)] for _ in range(n)]
+
+        hien_thi(A, text_A)
+
+    except:
+        messagebox.showerror("Lỗi", "Nhập n hợp lệ!")
+
+# ====== HIỂN THỊ MA TRẬN ======
+def hien_thi(matrix, widget):
+    widget.delete("1.0", tk.END)
+    for row in matrix:
+        widget.insert(tk.END, " ".join(f"{x:5}" for x in row) + "\n")
+
+# ====== TẠO MA TRẬN B ======
+def tao_ma_tran_B():
+    try:
+        n = len(A)
+        if n == 0:
+            messagebox.showerror("Lỗi", "Chưa tạo ma trận A!")
+            return
+
+        # Tìm phần tử có trị tuyệt đối lớn nhất
+        max_val = abs(A[0][0])
+        row_max, col_max = 0, 0
+
+        for i in range(n):
+            for j in range(n):
+                if abs(A[i][j]) > max_val:
+                    max_val = abs(A[i][j])
+                    row_max, col_max = i, j
+
+        # Tạo ma trận B (bỏ dòng và cột)
+        B = []
+        for i in range(n):
+            if i == row_max:
+                continue
+
+            row = []
+            for j in range(n):
+                if j == col_max:
+                    continue
+                row.append(A[i][j])
+
+            B.append(row)
+
+        hien_thi(B, text_B)
+
+        label_info.config(
+            text=f"Max |A[i][j]| = {max_val} tại dòng {row_max}, cột {col_max}"
+        )
+
+    except:
+        messagebox.showerror("Lỗi", "Có lỗi xảy ra!")
+
+# ====== GIAO DIỆN ======
+root = tk.Tk()
+root.title("Bài 94 - Ma trận")
+root.geometry("500x450")
+
+# Nhập n
+tk.Label(root, text="Nhập n (>1):").pack()
+entry_n = tk.Entry(root)
+entry_n.pack()
+
+# Nút tạo A
+tk.Button(root, text="Tạo ma trận A", command=tao_ma_tran).pack(pady=5)
+
+# Hiển thị A
+tk.Label(root, text="Ma trận A:").pack()
+text_A = tk.Text(root, height=8)
+text_A.pack()
+
+# Nút tạo B
+tk.Button(root, text="Tạo ma trận B", command=tao_ma_tran_B).pack(pady=5)
+
+# Hiển thị thông tin
+label_info = tk.Label(root, text="")
+label_info.pack()
+
+# Hiển thị B
+tk.Label(root, text="Ma trận B:").pack()
+text_B = tk.Text(root, height=8)
+text_B.pack()
+
+root.mainloop()
