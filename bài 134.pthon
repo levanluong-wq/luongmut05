@@ -1,0 +1,57 @@
+import tkinter as tk
+from tkinter import messagebox
+
+# ====== HÀM ĐỔI LA MÃ -> SỐ ======
+def rtoi(s):
+    roman = {
+        'I': 1, 'V': 5, 'X': 10,
+        'L': 50, 'C': 100,
+        'D': 500, 'M': 1000
+    }
+
+    total = 0
+
+    for i in range(len(s)):
+        if i < len(s) - 1 and roman[s[i]] < roman[s[i+1]]:
+            total -= roman[s[i]]
+        else:
+            total += roman[s[i]]
+
+    return total
+
+# ====== KIỂM TRA HỢP LỆ ======
+def hop_le(s):
+    valid = {'I','V','X','L','C','D','M'}
+    return all(ch in valid for ch in s)
+
+# ====== XỬ LÝ NÚT ======
+def tinh():
+    s = entry.get().upper()
+
+    if not s:
+        messagebox.showerror("Lỗi", "Vui lòng nhập chuỗi!")
+        return
+
+    if not hop_le(s):
+        messagebox.showerror("Lỗi", "Chuỗi không phải số La Mã hợp lệ!")
+        return
+
+    kq = rtoi(s)
+    label_kq.config(text=f"Kết quả: {kq}")
+
+# ====== GIAO DIỆN ======
+root = tk.Tk()
+root.title("Đổi số La Mã → số nguyên")
+root.geometry("350x200")
+
+tk.Label(root, text="Nhập số La Mã:").pack(pady=5)
+
+entry = tk.Entry(root, width=25)
+entry.pack(pady=5)
+
+tk.Button(root, text="Chuyển đổi", command=tinh).pack(pady=10)
+
+label_kq = tk.Label(root, text="Kết quả:")
+label_kq.pack(pady=10)
+
+root.mainloop()
