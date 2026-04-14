@@ -1,0 +1,61 @@
+import tkinter as tk
+from tkinter import messagebox
+
+def doi_tien():
+    try:
+        n = int(entry_n.get())
+
+        if n <= 5:
+            messagebox.showerror("Lỗi", "n phải > 5")
+            return
+
+        min_to = float('inf')
+        best = None
+
+        # Duyệt z (tờ 5000)
+        for z in range(n // 5 + 1):
+            for y in range(n // 2 + 1):
+                x = n - 2*y - 5*z
+
+                if x < 0:
+                    continue
+
+                tong_to = x + y + z
+
+                # Điều kiện: y > x + z
+                if y > x + z:
+                    if tong_to < min_to:
+                        min_to = tong_to
+                        best = (x, y, z)
+
+        # Hiển thị kết quả
+        if best:
+            x, y, z = best
+            label_kq.config(
+                text=f"Kết quả:\n1000đ: {x} tờ\n2000đ: {y} tờ\n5000đ: {z} tờ\nTổng: {x+y+z} tờ"
+            )
+        else:
+            label_kq.config(text="Không có phương án phù hợp")
+
+    except:
+        messagebox.showerror("Lỗi", "Vui lòng nhập số nguyên hợp lệ!")
+
+# ====== GIAO DIỆN ======
+root = tk.Tk()
+root.title("Đổi tiền tối ưu")
+root.geometry("350x250")
+
+# Nhập n
+tk.Label(root, text="Nhập số tiền n (nghìn đồng):").pack(pady=5)
+entry_n = tk.Entry(root)
+entry_n.pack(pady=5)
+
+# Nút tính
+btn = tk.Button(root, text="Đổi tiền", command=doi_tien)
+btn.pack(pady=10)
+
+# Kết quả
+label_kq = tk.Label(root, text="Kết quả:", justify="left")
+label_kq.pack(pady=10)
+
+root.mainloop()
