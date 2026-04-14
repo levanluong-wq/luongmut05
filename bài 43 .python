@@ -1,0 +1,52 @@
+import tkinter as tk
+from tkinter import messagebox
+
+# ====== HÀM TÍNH FIBONACCI ======
+def fibonacci(n):
+    if n == 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        a = 0
+        b = 1
+        for i in range(2, n + 1):
+            c = a + b
+            a = b
+            b = c
+        return b
+
+# ====== XỬ LÝ NÚT ======
+def tinh():
+    try:
+        n = int(entry_n.get())
+
+        if n < 0 or n >= 40:
+            messagebox.showerror("Lỗi", "n phải từ 0 đến 39")
+            return
+
+        kq = fibonacci(n)
+        label_kq.config(text=f"F({n}) = {kq}")
+
+    except:
+        messagebox.showerror("Lỗi", "Vui lòng nhập số nguyên hợp lệ!")
+
+# ====== GIAO DIỆN ======
+root = tk.Tk()
+root.title("Tính số Fibonacci")
+root.geometry("300x200")
+
+# Nhập n
+tk.Label(root, text="Nhập n (0 ≤ n < 40):").pack(pady=5)
+entry_n = tk.Entry(root)
+entry_n.pack(pady=5)
+
+# Nút tính
+btn = tk.Button(root, text="Tính Fibonacci", command=tinh)
+btn.pack(pady=10)
+
+# Kết quả
+label_kq = tk.Label(root, text="Kết quả: ")
+label_kq.pack(pady=10)
+
+root.mainloop()
