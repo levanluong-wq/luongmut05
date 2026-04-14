@@ -1,0 +1,49 @@
+import tkinter as tk
+from tkinter import messagebox
+
+def tim_chuoi_0():
+    s = entry.get()
+
+    # kiểm tra hợp lệ
+    if any(ch not in '01' for ch in s):
+        messagebox.showerror("Lỗi", "Chỉ được nhập 0 và 1!")
+        return
+
+    max_len = 0
+    cur_len = 0
+    max_str = ""
+    cur_str = ""
+
+    for ch in s:
+        if ch == '0':
+            cur_len += 1
+            cur_str += '0'
+        else:
+            if cur_len > max_len:
+                max_len = cur_len
+                max_str = cur_str
+            cur_len = 0
+            cur_str = ""
+
+    # kiểm tra cuối chuỗi
+    if cur_len > max_len:
+        max_str = cur_str
+
+    label_kq.config(text=f"Kết quả: {max_str} (độ dài = {len(max_str)})")
+
+# ====== GIAO DIỆN ======
+root = tk.Tk()
+root.title("Tìm chuỗi 0 dài nhất")
+root.geometry("350x200")
+
+tk.Label(root, text="Nhập chuỗi nhị phân:").pack(pady=5)
+
+entry = tk.Entry(root, width=30)
+entry.pack(pady=5)
+
+tk.Button(root, text="Tìm", command=tim_chuoi_0).pack(pady=10)
+
+label_kq = tk.Label(root, text="Kết quả:")
+label_kq.pack(pady=10)
+
+root.mainloop()
