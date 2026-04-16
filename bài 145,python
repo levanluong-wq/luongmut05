@@ -1,0 +1,54 @@
+import tkinter as tk
+from tkinter import messagebox
+
+# ====== HÀM ĐỆ QUY NHỊ PHÂN ======
+def to_bin(n):
+    if n == 0:
+        return ""
+    return to_bin(n // 2) + str(n % 2)
+
+# ====== HÀM ĐỆ QUY HEX ======
+def to_hex(n):
+    hex_chars = "0123456789ABCDEF"
+    if n == 0:
+        return ""
+    return to_hex(n // 16) + hex_chars[n % 16]
+
+# ====== XỬ LÝ NÚT ======
+def tinh():
+    try:
+        n = int(entry.get())
+
+        if n < 0:
+            messagebox.showerror("Lỗi", "Vui lòng nhập số nguyên dương!")
+            return
+
+        # xử lý trường hợp n = 0
+        bin_kq = "0" if n == 0 else to_bin(n)
+        hex_kq = "0" if n == 0 else to_hex(n)
+
+        label_bin.config(text=f"Nhị phân: {bin_kq}")
+        label_hex.config(text=f"Hex: {hex_kq}")
+
+    except:
+        messagebox.showerror("Lỗi", "Nhập số hợp lệ!")
+
+# ====== GIAO DIỆN ======
+root = tk.Tk()
+root.title("Đổi số (Đệ quy)")
+root.geometry("350x220")
+
+tk.Label(root, text="Nhập số nguyên dương n:").pack(pady=5)
+
+entry = tk.Entry(root, width=25)
+entry.pack(pady=5)
+
+tk.Button(root, text="Chuyển đổi", command=tinh).pack(pady=10)
+
+label_bin = tk.Label(root, text="Nhị phân:")
+label_bin.pack(pady=5)
+
+label_hex = tk.Label(root, text="Hex:")
+label_hex.pack(pady=5)
+
+root.mainloop()
